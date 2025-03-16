@@ -37,7 +37,7 @@ app.use(auth(config));
 const  routeFiles = fs.readdirSync('./routes');
 routeFiles.forEach((file) => {
   import(`./routes/${file}`).then((route) => {
-    app.use(route.default);
+    app.use("/api/user",route.default);
   }).catch((err) => {
     console.error("Error: ", err.message);
   });
