@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import connectDB from './db/connect.js';
+import fs from 'fs';
 dotenv.config();
 
 const app = express();
@@ -29,6 +30,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(auth(config));
 
+// app.get('/hi', (req, res) => {
+//   res.send('Hello World!');
+// }
+// );
+const  routeFiles = fs.readdirSync('./routes');
+routeFiles.forEach((file) => {
+  import(`./routes/${file}`).then((route) => {
+    app.use(route.default);
+  }).catch((err) => {
+    console.error("Error: ", err.message);
+  });
+});
 const server = async () => {
   try{
     await connectDB();
