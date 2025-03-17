@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import connectDB from './db/connect.js';
 import fs from 'fs';
+import User from './models/userModel.js';
 dotenv.config();
 
 const app = express();
@@ -34,6 +35,14 @@ app.use(auth(config));
 //   res.send('Hello World!');
 // }
 // );
+const ensuerUserInDb = asyncHandler(async (user) => {
+  try{
+    const userExist = await User.findOne({auth_id: user.sub});
+  }catch(err){
+    console.error("Error: ", err.message);
+  }
+})
+
 const  routeFiles = fs.readdirSync('./routes');
 routeFiles.forEach((file) => {
   import(`./routes/${file}`).then((route) => {
