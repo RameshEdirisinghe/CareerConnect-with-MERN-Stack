@@ -35,13 +35,13 @@ app.use(auth(config));
 //   res.send('Hello World!');
 // }
 // );
-const ensuerUserInDb = asyncHandler(async (user) => {
-  try{
-    const userExist = await User.findOne({auth_id: user.sub});
-  }catch(err){
-    console.error("Error: ", err.message);
-  }
-})
+// const ensuerUserInDb = asyncHandler(async (user) => {
+//   try{
+//     const userExist = await User.findOne({auth_id: user.sub});
+//   }catch(err){
+//     console.error("Error: ", err.message);
+//   }
+// })
 
 const  routeFiles = fs.readdirSync('./routes');
 routeFiles.forEach((file) => {
