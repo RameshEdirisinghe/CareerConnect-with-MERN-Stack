@@ -44,27 +44,6 @@ app.use(auth(config));
 //   }
 // })
 
-const  routeFiles = fs.readdirSync('./routes');
-routeFiles.forEach((file) => {
-  import(`./routes/${file}`).then((route) => {
-    app.use("/api/user",route.default);
-  }).catch((err) => {
-    console.error("Error: ", err.message);
-  });
-});
-const server = async () => {
-  try{
-    await connectDB();
-    console.log("Connected to database");
-    app.listen(process.env.PORT, () => {
-      console.log(`Server is running on port ${process.env.PORT}`);
-    });
-  }catch(err){
-    console.error("server error",err.message);
-    process.exit(1);
-  }
-};
-
 const enusureUserInDB = asyncHandler(async (user) => {
   try {
     const existingUser = await User.findOne({ auth0Id: user.sub });
@@ -89,5 +68,27 @@ const enusureUserInDB = asyncHandler(async (user) => {
     console.log("Error checking or adding user to db", error.message);
   }
 });
+
+const  routeFiles = fs.readdirSync('./routes');
+routeFiles.forEach((file) => {
+  import(`./routes/${file}`).then((route) => {
+    app.use("/api/user",route.default);
+  }).catch((err) => {
+    console.error("Error: ", err.message);
+  });
+});
+const server = async () => {
+  try{
+    await connectDB();
+    console.log("Connected to database");
+    app.listen(process.env.PORT, () => {
+      console.log(`Server is running on port ${process.env.PORT}`);
+    });
+  }catch(err){
+    console.error("server error",err.message);
+    process.exit(1);
+  }
+};
+
 
 server();
