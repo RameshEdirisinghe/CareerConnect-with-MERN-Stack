@@ -5,7 +5,7 @@ export const getUserProfile = asycHandler(async (req, res) => {
   try {
     const { id } = req.params;
 
-    // find user by auth0 id
+
     const user = await User.findOne({ auth0Id: id });
 
     if (!user) {

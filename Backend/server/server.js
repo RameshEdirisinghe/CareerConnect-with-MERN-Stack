@@ -71,6 +71,7 @@ const enusureUserInDB = asyncHandler(async (user) => {
 
 app.get("/", async (req, res) => {
   if (req.oidc.isAuthenticated()) {
+    // check if Auth0 user exists in the db
     await enusureUserInDB(req.oidc.user);
 
     return res.redirect(process.env.CLIENT_URL);
@@ -82,7 +83,7 @@ app.get("/", async (req, res) => {
 const  routeFiles = fs.readdirSync('./routes');
 routeFiles.forEach((file) => {
   import(`./routes/${file}`).then((route) => {
-    app.use("/api/user",route.default);
+    app.use("/api/v1/",route.default);
   }).catch((err) => {
     console.error("Error: ", err.message);
   });
